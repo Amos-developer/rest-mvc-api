@@ -31,7 +31,6 @@ export const getUser = async (req, res) => {
 }
 
 export const createUser = async (req, res) => {
-  console.log("Incoming request body:", req.body); // 👈 Add this for debugging
   const userData = req.body;
   try {
     const newUser = await User.createUser(userData);
@@ -44,5 +43,24 @@ export const createUser = async (req, res) => {
       .status(500)
       .json({ message: "Failed to create user", error: error.message });
   }
+};
+
+export const updateUser = async (req, res) => {
+    console.log(req.body);
+    const userId = req.params.id;
+    const userData = req.body;
+    try {
+        const updatedUser = await User.updateUserById(userId, userData);
+
+        // Console the updated user for debugging
+        console.log("User updated: " +updatedUser);
+        res.json(updatedUser);
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update user', error: error.message });
+    }
 };
 

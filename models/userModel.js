@@ -36,3 +36,18 @@ export const createUser = async (userData) => {
         throw new Error('Internal Server Error');
     }
 };
+
+// Update a user by ID
+export const updateUserById = async (id, userData) => {
+    try {
+        const { firstname, lastname, email, phone, password } = userData;
+        const res = await db.query(
+            'UPDATE users SET firstname = $1, lastname = $2, email = $3, phone = $4, password = $5 WHERE id = $6 RETURNING *',
+            [firstname, lastname, email, phone, password, id]
+        );
+        return res.rows[0];
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw new Error('Internal Server Error');
+    }
+};

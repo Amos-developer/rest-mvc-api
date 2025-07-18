@@ -1,10 +1,19 @@
 import express from 'express';
-import './config/db.js'; // Ensure the database connection is established
+import pool from './config/db.js'; // Ensure the database connection is established
 import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes.js';
 dotenv.config();
 
 const app = express();
 
-app.listen(()=>{
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Routes
+app.use('/api/users', userRoutes);
+
+// Start server
+const PORT = process.env.PORT;
+app.listen(PORT, ()=>{
     console.log(`Server is running on port ${process.env.PORT}`);
 })

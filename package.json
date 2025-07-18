@@ -1,0 +1,25 @@
+{
+  "name": "rest-mvc-api",
+  "version": "1.0.0",
+  "description": "A restfull mvc api ",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amos-developer/rest-mvc-api.git"
+  },
+  "author": "Amos-Developer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Amos-developer/rest-mvc-api/issues"
+  },
+  "homepage": "https://github.com/Amos-developer/rest-mvc-api#readme",
+  "dependencies": {
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  }
+}

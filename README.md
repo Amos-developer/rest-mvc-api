@@ -39,7 +39,7 @@ rest-mvc-api/
 
 ## 📦 Setup Instructions
 
-### 1. Clone the project
+
 ```bash
 git clone https://github.com/Amos-developer/your-repo-name.git
 cd your-repo-name

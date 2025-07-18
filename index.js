@@ -11,6 +11,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/users/:id', userRoutes);
+
 
 // Start server
 const PORT = process.env.PORT;

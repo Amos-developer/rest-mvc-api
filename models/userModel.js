@@ -11,3 +11,13 @@ export const getAllUsers = async (req, res) => {
     }
 };
 
+// get user by ID
+export const getUserById = async (id) =>{
+    try{
+        const res = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+        return res.rows[0];
+    }catch (error) {
+        console.error('Error fetching user by ID:', error);
+        throw new Error('Internal Server Error');
+    }
+}

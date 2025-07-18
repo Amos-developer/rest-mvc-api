@@ -21,3 +21,18 @@ export const getUserById = async (id) =>{
         throw new Error('Internal Server Error');
     }
 }
+
+// Create a new user
+export const createUser = async (userData) => {
+    try {
+        const { firstname, lastname, email, phone, password } = userData;
+        const res = await db.query(
+            'INSERT INTO users (firstname, lastname, email, phone, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+             [firstname, lastname, email, phone, password]
+            );
+        return res.rows[0];
+    } catch (error) {
+        console.error('Error creating user:', error);
+        throw new Error('Internal Server Error');
+    }
+};

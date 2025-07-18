@@ -29,3 +29,20 @@ export const getUser = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch user', error: error.message });
     }
 }
+
+export const createUser = async (req, res) => {
+  console.log("Incoming request body:", req.body); // 👈 Add this for debugging
+  const userData = req.body;
+  try {
+    const newUser = await User.createUser(userData);
+
+    // Console the newly created user for debugging
+    console.log("New user created: " + newUser);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to create user", error: error.message });
+  }
+};
+

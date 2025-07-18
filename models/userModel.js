@@ -51,3 +51,14 @@ export const updateUserById = async (id, userData) => {
         throw new Error('Internal Server Error');
     }
 };
+
+// Delete a user by ID
+export const deleteUserById = async (id) => {
+    try {
+        const res = await db.query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
+        return res.rows[0];
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        throw new Error('Internal Server Error');
+    }
+};

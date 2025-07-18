@@ -64,3 +64,19 @@ export const updateUser = async (req, res) => {
     }
 };
 
+export const deleteUser = async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const deletedUser = await User.deleteUserById(userId);
+
+        // Console the deleted user for debugging
+        console.log("User deleted: " +deletedUser);
+        res.json(deletedUser);
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to delete user', error: error.message });
+    }
+};

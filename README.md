@@ -79,7 +79,7 @@ You can test the API using:
 >>>> Postman >>>>
 
 🧑‍💻 Author
-Your Amos Nyoni
+Amos Nyoni
 GitHub https://github.com/Amos-developer
 
 

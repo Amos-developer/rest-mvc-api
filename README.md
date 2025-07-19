@@ -39,7 +39,6 @@ rest-mvc-api/
 
 ## 📦 Setup Instructions
 
-### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Amos-developer/your-repo-name.git
@@ -80,7 +79,7 @@ You can test the API using:
 >>>> Postman >>>>
 
 🧑‍💻 Author
-Your Amos Nyoni
+Amos Nyoni
 GitHub https://github.com/Amos-developer
 
 

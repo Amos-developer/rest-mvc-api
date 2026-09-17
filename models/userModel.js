@@ -80,17 +80,48 @@ export const createUser = async (userData) => {
 
 // Update a user by ID
 export const updateUserById = async (id, userData) => {
-    try {
-        const { firstname, lastname, email, phone, password } = userData;
-        const res = await db.query(
-            'UPDATE users SET firstname = $1, lastname = $2, email = $3, phone = $4, password = $5 WHERE id = $6 RETURNING *',
-            [firstname, lastname, email, phone, password, id]
-        );
-        return res.rows[0];
-    } catch (error) {
-        console.error('Error updating user:', error);
-        throw new Error('Internal Server Error');
-    }
+  const currentUser = await db.query(
+    `SELECT *
+       FROM users
+       WHERE id = $1`,
+    [id],
+  );
+
+  if (!currentUser.rows[0]) {
+    return null;
+  }
+
+  const existing = currentUser.rows[0];
+
+  const firstname = userData.firstname ?? existing.firstname;
+
+  const lastname = userData.lastname ?? existing.lastname;
+
+  const email = userData.email ?? existing.email;
+
+  const phone = userData.phone ?? existing.phone;
+
+  const password = userData.password ?? existing.password;
+
+  const result = await db.query(
+    `UPDATE users
+     SET firstname = $1,
+         lastname = $2,
+         email = $3,
+         phone = $4,
+         password = $5
+     WHERE id = $6
+     RETURNING
+       id,
+       firstname,
+       lastname,
+       email,
+       phone,
+       role`,
+    [firstname, lastname, email, phone, password, id],
+  );
+
+  return result.rows[0];
 };
 
 // Delete a user by ID

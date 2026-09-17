@@ -2,6 +2,7 @@ import express from 'express';
 import pool from './config/db.js'; // Ensure the database connection is established
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -12,10 +13,11 @@ app.use(express.json());
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/users/:id', userRoutes);
+app.use('/api/auth', authRoutes);
 
 
 // Start server
-const PORT = 5000 || process.env.PORT;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);
 })

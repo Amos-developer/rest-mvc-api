@@ -3,7 +3,16 @@ import db from '../config/db.js';
 // get all users
 export const getAllUsers = async (req, res) => {
     try {
-        const res = await db.query('SELECT * FROM users');
+        const res = await db.query(`
+           SELECT 
+           id,
+           firstname,
+           lastname,
+           email,
+           phone,
+           role
+           FROM users
+           `);
         return res.rows;
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -12,29 +21,61 @@ export const getAllUsers = async (req, res) => {
 };
 
 // get user by ID
-export const getUserById = async (id) =>{
-    try{
-        const res = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-        return res.rows[0];
-    }catch (error) {
-        console.error('Error fetching user by ID:', error);
-        throw new Error('Internal Server Error');
-    }
-}
+export const getUserById = async (id) => {
+  const result = await db.query(
+    `SELECT
+        id,
+        firstname,
+        lastname,
+        email,
+        phone,
+        role
+     FROM users
+     WHERE id = $1`,
+    [id],
+  );
+
+  return result.rows[0];
+};
+
+// get user by email
+export const getUserByEmail = async (email) => {
+  const result = await db.query(
+    `SELECT id,
+            firstname,
+            lastname,
+            email,
+            phone,
+            password,
+            role
+     FROM users
+     WHERE email = $1`,
+    [email],
+  );
+
+  return result.rows[0];
+};
 
 // Create a new user
 export const createUser = async (userData) => {
-    try {
-        const { firstname, lastname, email, phone, password } = userData;
-        const res = await db.query(
-            'INSERT INTO users (firstname, lastname, email, phone, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-             [firstname, lastname, email, phone, password]
-            );
-        return res.rows[0];
-    } catch (error) {
-        console.error('Error creating user:', error);
-        throw new Error('Internal Server Error');
-    }
+  const { firstname, lastname, email, phone, password } = userData;
+
+  const result = await db.query(
+    `INSERT INTO users
+      (firstname, lastname, email, phone, password)
+     VALUES
+      ($1, $2, $3, $4, $5)
+     RETURNING
+      id,
+      firstname,
+      lastname,
+      email,
+      phone,
+      role`,
+    [firstname, lastname, email, phone, password],
+  );
+
+  return result.rows[0];
 };
 
 // Update a user by ID

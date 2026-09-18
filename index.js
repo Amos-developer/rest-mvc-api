@@ -3,6 +3,7 @@ import pool from './config/db.js'; // Ensure the database connection is establis
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import { notFoundHandler, errorHandler } from "./middleware/errorMiddleware.js";
 dotenv.config();
 
 const app = express();
@@ -14,6 +15,12 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/users/:id', userRoutes);
 app.use('/api/auth', authRoutes);
+
+// 404 handler
+app.use(notFoundHandler);
+
+// Global error handler
+app.use(errorHandler);
 
 
 // Start server

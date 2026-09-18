@@ -1,9 +1,15 @@
 import { body } from "express-validator";
 
 export const registerValidation = [
-  body("firstname").trim().notEmpty().withMessage("Firstname is required"),
+  body("firstname")
+    .trim()
+    .notEmpty()
+    .withMessage("Firstname is required"),
 
-  body("lastname").trim().notEmpty().withMessage("Lastname is required"),
+  body("lastname")
+    .trim()
+    .notEmpty()
+    .withMessage("Lastname is required"),
 
   body("email")
     .trim()

@@ -1,23 +1,19 @@
 import db from '../config/db.js';
 
 // get all users
-export const getAllUsers = async (req, res) => {
-    try {
-        const res = await db.query(`
-           SELECT 
-           id,
-           firstname,
-           lastname,
-           email,
-           phone,
-           role
-           FROM users
-           `);
-        return res.rows;
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+export const getAllUsers = async () => {
+  const result = await db.query(`
+    SELECT
+      id,
+      firstname,
+      lastname,
+      email,
+      phone,
+      role
+    FROM users
+  `);
+
+  return result.rows;
 };
 
 // get user by ID

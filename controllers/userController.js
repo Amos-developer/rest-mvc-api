@@ -1,35 +1,35 @@
 import * as User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 
-export const getUsers = async (req, res) => {
-    try {
-        const users = await User.getAllUsers(req, res);
+export const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.getAllUsers();
 
-        // Console all users for debugging
-        console.log("All users: " +users);
+    return res.json(users);
+  } catch (error) {
+    next(error);
+  }
+};
 
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch users', error: error.message });
+
+export const getUser = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await User.getUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
-}
 
-export const getUser = async (req, res) => {
-    const userId = req.params.id;
-    try {
-        const user = await User.getUserById(userId);
-        
-        // Console the user for debugging
-        console.log("User fetched by ID: " +user);
-        res.json(user);
+    return res.json(user);
+  } catch (error) {
+    next(error);
+  }
+};
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch user', error: error.message });
-    }
-}
 
 export const createUser = async (req, res) => {
   const userData = req.body;
@@ -46,13 +46,15 @@ export const createUser = async (req, res) => {
   }
 };
 
-export const updateUser = async (req, res) => {
+
+export const updateUser = async (req, res, next) => {
   const userId = req.params.id;
 
   try {
-    const userData = { ...req.body };
+    const userData = {
+      ...req.body,
+    };
 
-    // If password is being changed, hash it first
     if (userData.password) {
       userData.password = await bcrypt.hash(userData.password, 12);
     }
@@ -67,27 +69,27 @@ export const updateUser = async (req, res) => {
 
     return res.json(updatedUser);
   } catch (error) {
-    console.error("Update user error:", error);
-
-    return res.status(500).json({
-      message: "Failed to update user",
-    });
+    next(error);
   }
 };
 
-export const deleteUser = async (req, res) => {
-    const userId = req.params.id;
-    try {
-        const deletedUser = await User.deleteUserById(userId);
 
-        // Console the deleted user for debugging
-        console.log("User deleted: " +deletedUser);
-        res.json(deletedUser);
+export const deleteUser = async (req, res, next) => {
+  const userId = req.params.id;
 
-        if (!deletedUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Failed to delete user', error: error.message });
+  try {
+    const deletedUser = await User.deleteUserById(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
+
+    return res.json({
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
 };
